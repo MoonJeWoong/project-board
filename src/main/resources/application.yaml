@@ -34,10 +34,6 @@ spring:
         format_sql: true
         default_batch_fetch_size: 100   # entity를 조회할 때 동일한 쿼리문들을 설정 값만큼 모아서 in절로 치환해 한번에 처리하는 옵션.
 
-  h2:
-    console:
-      enabled: false
-
   sql:
     init:   # data.sql 기반의 초기화를 항상 사용함.
       mode: always

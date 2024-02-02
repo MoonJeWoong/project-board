@@ -1,0 +1,58 @@
+# 디버그 모드 끄기
+debug: false
+
+# Actuator의 엔드 포인트를 전부 노출한다.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# 로깅 관련 설정
+logging:
+  level:
+    board: debug  # board 패키지 로깅
+    org.springframework.web.servlet: debug  # Spring 프레임워크의 servlet 패키지 로깅 => http 요청 응답 메세지 로깅
+    org.hibernate.type.descriptor.sql.BasicBinder: trace  # hibernate 쿼리에 바인딩 되는 값들 로깅
+
+spring:
+  # datasource 관련 설정
+  datasource:
+    url: jdbc:mysql://localhost:3306/board
+    username: woong
+    password: woong
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  #jpa 관련 설정
+  jpa:
+    defer-datasource-initialization: true   # data.sql 파일 초기화 작업을 하이버네이트 초기화 이후 수행하도록 하는 옵션
+    hibernate:
+      ddl-auto: create  # 연습용 프로젝트이므로 create 옵션 설정
+    show-sql: true  # jpa에서 날라가는 sql 쿼리문을 로깅
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100   # entity를 조회할 때 동일한 쿼리문들을 설정 값만큼 모아서 in절로 치환해 한번에 처리하는 옵션.
+
+  sql:
+    init:   # data.sql 기반의 초기화를 항상 사용함.
+      mode: always
+
+---
+# yaml 파일은 ---을 기준으로 여러개로 나눠서 작성이 가능하다.
+
+spring:
+  config:
+    activate:
+      on-profile: testdb  # testdb 프로파일로 실행할 때 사용된다.
+  datasource:
+    url: jdbc:h2:mem:board;mode=mysql
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      mode: always
+  test:
+    database:
+      replace: none # 스프링에서 띄우는 기본 인메모리 h2 DB를 사용 안함 (위 설정에 명시된 datasource를 사용)
+
+

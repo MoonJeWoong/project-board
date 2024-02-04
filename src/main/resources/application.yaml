@@ -38,6 +38,11 @@ spring:
     init:   # data.sql 기반의 초기화를 항상 사용함.
       mode: always
 
+  data:
+    rest:
+      base-path: /api
+      detection-strategy: annotated   # @RepositoryRestResource 어노테이션을 선언한 Repository 인터페이스만 API로 노출한다.
+
 ---
 # yaml 파일은 ---을 기준으로 여러개로 나눠서 작성이 가능하다.
 
